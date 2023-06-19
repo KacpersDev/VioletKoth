@@ -7,7 +7,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.loopstudios.VioletKoth;
+import org.loopstudios.koth.Koth;
 import org.loopstudios.koth.LocationType;
+import org.loopstudios.koth.manager.KothManager;
+import org.loopstudios.koth.task.KothTask;
 import org.loopstudios.utils.CC;
 
 public class KothCommand implements CommandExecutor {
@@ -127,6 +130,60 @@ public class KothCommand implements CommandExecutor {
                         player.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.cuboid-claimed")));
                     }
                 }
+            }
+        } else if (args[0].equalsIgnoreCase("start")) {
+            if (!sender.hasPermission("koth.admin")) {
+                sender.sendMessage(CC.translate(this.plugin.getConfig()
+                        .getString("messages.no-permissions")));
+                return false;
+            }
+
+            if (args.length == 1) {
+                wrongUsage(sender);
+            } else {
+                String kothName = args[1];
+
+                if (KothManager.activeKoths.get(0) != null) {
+                    sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-running")));
+                    return false;
+                }
+
+                KothManager.activeKoths.add(new Koth(kothName,
+                        this.plugin.getConfig().getInt("koth.captime"),
+                        this.plugin.getKothManager().getCuboid1(kothName),
+                        this.plugin.getKothManager().getCuboid2(kothName),
+                        this.plugin.getKothManager().getCapzone1(kothName),
+                        this.plugin.getKothManager().getCapzone2(kothName)));
+
+                new KothTask(this.plugin).run(this.plugin);
+                sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-started")));
+            }
+        } else if (args[0].equalsIgnoreCase("stop")) {
+            if (!sender.hasPermission("koth.admin")) {
+                sender.sendMessage(CC.translate(this.plugin.getConfig()
+                        .getString("messages.no-permissions")));
+                return false;
+            }
+
+            if (args.length == 1) {
+                wrongUsage(sender);
+            } else {
+                String kothName = args[1];
+
+                if (KothManager.activeKoths.get(0) == null) {
+                    sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-not-running")));
+                    return false;
+                }
+
+                KothManager.activeKoths.add(new Koth(kothName,
+                        this.plugin.getConfig().getInt("koth.captime"),
+                        this.plugin.getKothManager().getCuboid1(kothName),
+                        this.plugin.getKothManager().getCuboid2(kothName),
+                        this.plugin.getKothManager().getCapzone1(kothName),
+                        this.plugin.getKothManager().getCapzone2(kothName)));
+
+                new KothTask(this.plugin).stop();
+                sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-stopped")));
             }
         }
 

@@ -18,7 +18,6 @@ public class KothManager {
     }
 
     public static List<Koth> activeKoths = new ArrayList<>();
-    public static HashMap<Koth, Integer> activeKothTimers = new HashMap<>();
 
     public boolean exists(String kothName) {
         return this.plugin.getKothDataConfiguration().contains("koth." + kothName);
@@ -33,12 +32,7 @@ public class KothManager {
         this.plugin.getKothDataConfiguration().set("koth." + kothName, null);
         this.plugin.relodData();
     }
-/*
-    public void setCapTime(String koth, int timer) {
-        this.plugin.getKothDataConfiguration().set("koth." + koth + ".captime", timer);
-        this.plugin.relodData();
-    }
-*/
+
     public void setCapzone(String koth, LocationType type, Location location) {
         if (type.equals(LocationType.FIRST)) {
             this.plugin.getKothDataConfiguration().set("koth." + koth + ".capzone-1", location);
@@ -57,6 +51,22 @@ public class KothManager {
             this.plugin.getKothDataConfiguration().set("koth." + koth + ".corner-2", location);
             this.plugin.relodData();
         }
+    }
+
+    public Location getCuboid1(String kothName){
+        return (Location) this.plugin.getKothDataConfiguration().get("koth." + kothName + ".corner-1");
+    }
+
+    public Location getCuboid2(String kothName){
+        return (Location) this.plugin.getKothDataConfiguration().get("koth." + kothName + ".corner-2");
+    }
+
+    public Location getCapzone1(String kothName){
+        return (Location) this.plugin.getKothDataConfiguration().get("koth." + kothName + ".capzone-1");
+    }
+
+    public Location getCapzone2(String kothName){
+        return (Location) this.plugin.getKothDataConfiguration().get("koth." + kothName + ".capzone-2");
     }
 
     public String getRandomReward(){

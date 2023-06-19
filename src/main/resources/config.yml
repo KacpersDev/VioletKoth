@@ -12,6 +12,8 @@ messages:
   koth-capping: "&cKoth is currently under control"
   koth-lost: "&cKoth control has been lost"
   koth-capped: "&cKoth has been capped"
+  koth-started: "&aSuccessfully started koth"
+  koth-stopped: "&aSuccesfully stopped koth"
 koth:
   captime: 500
 settings:

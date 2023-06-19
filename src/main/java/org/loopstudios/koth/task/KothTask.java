@@ -56,6 +56,7 @@ public class KothTask {
 
                     if (underControl && capper != null && timer <= 0) {
                         Bukkit.broadcastMessage(plugin.getConfig().getString("koth-capped"));
+                        stop();
                     }
                 }
             }
