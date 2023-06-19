@@ -1,14 +1,18 @@
 package org.loopstudios;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.loopstudios.koth.command.KothCommand;
+import org.loopstudios.koth.listener.KothListener;
 import org.loopstudios.koth.manager.KothManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public final class VioletKoth extends JavaPlugin {
 
@@ -20,17 +24,17 @@ public final class VioletKoth extends JavaPlugin {
     public void onEnable() {
         this.configuration();
         this.command();
-        this.listener();
+        this.listener(Bukkit.getPluginManager());
 
         this.kothManager = new KothManager(this);
     }
 
-    private void listener(){
-
+    private void listener(PluginManager pluginManager){
+        pluginManager.registerEvents(new KothListener(this), this);
     }
 
     private void command(){
-        this.getCommand("koth").setExecutor(new KothCommand(this));
+        Objects.requireNonNull(this.getCommand("koth")).setExecutor(new KothCommand(this));
     }
 
     private void configuration(){

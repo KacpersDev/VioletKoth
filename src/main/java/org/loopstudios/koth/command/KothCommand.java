@@ -187,9 +187,7 @@ public class KothCommand implements CommandExecutor {
             }
         }
 
-
         return true;
-
     }
 
     private void wrongUsage(CommandSender sender){
