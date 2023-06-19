@@ -55,12 +55,18 @@ public class KothTask {
                     }
 
                     if (underControl && capper != null && timer <= 0) {
+                        Player p = Bukkit.getPlayer(capper);
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), reward().replace("%player%", p.getName()));
                         Bukkit.broadcastMessage(plugin.getConfig().getString("koth-capped"));
                         stop();
                     }
                 }
             }
         }, 0L, 20L);
+    }
+
+    private String reward(){
+        return this.plugin.getKothManager().getRandomReward();
     }
 
     public void stop(){
