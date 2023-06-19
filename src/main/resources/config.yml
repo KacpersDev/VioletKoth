@@ -1,0 +1,10 @@
+messages:
+  wrong-usage:
+    - ""
+  no-permissions: "&cYou don't have permission to execute this command."
+  koth-exists: "&cKoth already exists"
+  koth-not-exists: "&cKoth doesn't exists."
+  koth-created: "&aSuccessfully created koth"
+  koth-removed: "&aSuccessfully removed koth"
+
+settings:
