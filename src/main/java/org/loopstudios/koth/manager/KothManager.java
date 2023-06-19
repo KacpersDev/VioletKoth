@@ -5,16 +5,16 @@ import org.loopstudios.VioletKoth;
 import org.loopstudios.koth.Koth;
 import org.loopstudios.koth.LocationType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class KothManager {
 
     private final VioletKoth plugin;
+    private final Random random;
 
     public KothManager(VioletKoth plugin) {
         this.plugin = plugin;
+        this.random = new Random();
     }
 
     public static List<Koth> activeKoths = new ArrayList<>();
@@ -57,5 +57,27 @@ public class KothManager {
             this.plugin.getKothDataConfiguration().set("koth." + koth + ".corner-2", location);
             this.plugin.relodData();
         }
+    }
+
+    public String getRandomReward(){
+        List<String> commands = new ArrayList<>();
+        int randomNumber = random.nextInt(100);
+        if (this.plugin.getConfig().getConfigurationSection("settings.reward") == null) return null;
+        for (final String rewards : Objects.requireNonNull(this.plugin.getConfig().getConfigurationSection("settings.reward")).getKeys(false)) {
+            if (randomNumber < this.plugin.getConfig().getInt("settings.reward." + rewards + ".chance")) {
+                commands.add(this.plugin.getConfig().getString("settings.reward." + rewards + ".command"));
+            }
+        }
+        int randomList = random.nextInt(commands.size());
+        return commands.get(randomList);
+    }
+
+    public LocationType getLocationByString(String s){
+        if (s.equalsIgnoreCase("first")) {
+            return LocationType.FIRST;
+        } else if (s.equalsIgnoreCase("second")) {
+            return LocationType.SECOND;
+        }
+        return null;
     }
 }

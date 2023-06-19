@@ -6,5 +6,10 @@ messages:
   koth-not-exists: "&cKoth doesn't exists."
   koth-created: "&aSuccessfully created koth"
   koth-removed: "&aSuccessfully removed koth"
-
+  captime-set: "&cSuccessfully set captime"
+  capzone-claimed: "&aSuccessfully claimed capzone."
 settings:
+  reward:
+    1:
+      chance: 100
+      command: ""
