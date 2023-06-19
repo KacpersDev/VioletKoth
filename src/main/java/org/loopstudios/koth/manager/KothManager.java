@@ -33,12 +33,12 @@ public class KothManager {
         this.plugin.getKothDataConfiguration().set("koth." + kothName, null);
         this.plugin.relodData();
     }
-
+/*
     public void setCapTime(String koth, int timer) {
         this.plugin.getKothDataConfiguration().set("koth." + koth + ".captime", timer);
         this.plugin.relodData();
     }
-
+*/
     public void setCapzone(String koth, LocationType type, Location location) {
         if (type.equals(LocationType.FIRST)) {
             this.plugin.getKothDataConfiguration().set("koth." + koth + ".capzone-1", location);

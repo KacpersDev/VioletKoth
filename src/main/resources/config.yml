@@ -8,6 +8,12 @@ messages:
   koth-removed: "&aSuccessfully removed koth"
   captime-set: "&cSuccessfully set captime"
   capzone-claimed: "&aSuccessfully claimed capzone."
+  cuboid-claimed: "&aSuccessfully claimed cuboid"
+  koth-capping: "&cKoth is currently under control"
+  koth-lost: "&cKoth control has been lost"
+  koth-capped: "&cKoth has been capped"
+koth:
+  captime: 500
 settings:
   reward:
     1:

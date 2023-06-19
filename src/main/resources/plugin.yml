@@ -2,3 +2,7 @@ name: VioletKoth
 version: '${project.version}'
 main: org.loopstudios.VioletKoth
 api-version: '1.19'
+author: Loop Studios
+description: Koth plugin
+commands:
+  koth:

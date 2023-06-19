@@ -1,5 +1,6 @@
 package org.loopstudios.koth.command;
 
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,8 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import org.loopstudios.VioletKoth;
 import org.loopstudios.koth.LocationType;
 import org.loopstudios.utils.CC;
-
-import java.time.LocalTime;
 
 public class KothCommand implements CommandExecutor {
 
@@ -69,35 +68,6 @@ public class KothCommand implements CommandExecutor {
                 sender.sendMessage(CC.translate(this.plugin.getConfig()
                         .getString("messages.koth-removed")));
             }
-        } else if (args[0].equalsIgnoreCase("setcaptime")) {
-            if (!sender.hasPermission("koth.admin")) {
-                sender.sendMessage(CC.translate(this.plugin.getConfig()
-                        .getString("messages.no-permissions")));
-                return false;
-            }
-
-            if (args.length == 1) {
-                wrongUsage(sender);
-                return false;
-            } else {
-                String kothName = args[1];
-
-                if (!this.plugin.getKothManager().exists(kothName)) {
-                    sender.sendMessage(CC.translate(this.plugin
-                            .getConfig().getString("messages.not-koth-exists")));
-                    return false;
-                }
-
-                if (args.length == 2) {
-                    wrongUsage(sender);
-                    return false;
-                } else {
-                    int capTime = Integer.parseInt(args[2]);
-
-                    this.plugin.getKothManager().setCapTime(kothName, capTime);
-                    sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.captime-set")));
-                }
-            }
         } else if (args[0].equalsIgnoreCase("setcapzone")) {
             if (!(sender instanceof Player)) return false;
             Player player = (Player) sender;
@@ -117,7 +87,6 @@ public class KothCommand implements CommandExecutor {
                     return false;
                 } else {
                     String type = args[2];
-                    LocationType m = this.plugin.getKothManager().getLocationByString(type);
                     if (type.equalsIgnoreCase("first")) {
                         this.plugin.getKothManager().setCapzone(kothName, LocationType.FIRST, player.getLocation());
                         player.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.capzone-claimed")));
@@ -127,7 +96,40 @@ public class KothCommand implements CommandExecutor {
                     }
                 }
             }
+        } else if (args[0].equalsIgnoreCase("setcuboid")) {
+            if (!(sender instanceof Player)) return false;
+            Player player = (Player) sender;
+            if (!sender.hasPermission("koth.admin")) {
+                sender.sendMessage(CC.translate(this.plugin.getConfig()
+                        .getString("messages.no-permissions")));
+                return false;
+            }
+
+            if (args.length == 1) {
+                wrongUsage(sender);
+                return false;
+            } else {
+                String kothName = args[1];
+                if (args.length == 2) {
+                    wrongUsage(sender);
+                    return false;
+                } else {
+                    String type = args[2];
+                    if (type.equalsIgnoreCase("first")) {
+                        Location location = player.getLocation();
+                        location.setY(256);
+                        this.plugin.getKothManager().setCuboid(kothName, LocationType.FIRST, location);
+                        player.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.cuboid-claimed")));
+                    } else if (type.equalsIgnoreCase("second")) {
+                        Location location = player.getLocation();
+                        location.setY(-256);
+                        this.plugin.getKothManager().setCuboid(kothName, LocationType.SECOND, location);
+                        player.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.cuboid-claimed")));
+                    }
+                }
+            }
         }
+
 
         return true;
 

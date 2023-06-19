@@ -4,6 +4,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.loopstudios.koth.command.KothCommand;
 import org.loopstudios.koth.manager.KothManager;
 
 import java.io.File;
@@ -24,14 +25,12 @@ public final class VioletKoth extends JavaPlugin {
         this.kothManager = new KothManager(this);
     }
 
-    @Override
-    public void onDisable() {
+    private void listener(){
 
     }
 
-    private void listener(){}
-
     private void command(){
+        this.getCommand("koth").setExecutor(new KothCommand(this));
     }
 
     private void configuration(){
