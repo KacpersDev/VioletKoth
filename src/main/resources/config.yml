@@ -17,7 +17,7 @@ messages:
 koth:
   captime: 500
 settings:
-  reward:
+  reward: # placeholders -> %player%
     1:
       chance: 100
       command: ""

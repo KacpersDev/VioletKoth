@@ -185,6 +185,20 @@ public class KothCommand implements CommandExecutor {
                 new KothTask(this.plugin).stop();
                 sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-stopped")));
             }
+        } else if (args[0].equalsIgnoreCase("reset")) {
+            if (!sender.hasPermission("koth.admin")) {
+                sender.sendMessage(CC.translate(this.plugin.getConfig()
+                        .getString("messages.no-permissions")));
+                return false;
+            }
+
+            if (args.length == 1) {
+                wrongUsage(sender);
+                return false;
+            } else {
+                String kothName = args[1];
+
+            }
         }
 
         return true;
