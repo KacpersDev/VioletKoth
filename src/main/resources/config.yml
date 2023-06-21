@@ -14,6 +14,7 @@ messages:
   koth-capped: "&cKoth has been capped"
   koth-started: "&aSuccessfully started koth"
   koth-stopped: "&aSuccesfully stopped koth"
+  koth-not-running: "&cKoth is not running."
 koth:
   scheudle: 1000
   captime: 500

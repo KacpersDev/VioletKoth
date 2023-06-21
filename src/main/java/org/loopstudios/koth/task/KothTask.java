@@ -10,11 +10,13 @@ import org.loopstudios.koth.manager.KothManager;
 import org.loopstudios.utils.CC;
 import org.loopstudios.utils.Cuboid;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class KothTask {
 
     private final VioletKoth plugin;
+    public static HashMap<Koth, BukkitTask> activeTasks = new HashMap<>();
     private BukkitTask bukkitTask;
     private int timer;
     private final Koth koth;
@@ -32,33 +34,36 @@ public class KothTask {
     @SuppressWarnings("ALL")
     public void run(Plugin plugin){
         bukkitTask = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
+
             @Override
             public void run() {
 
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (cuboid.contains(player.getLocation()) && !underControl) {
-                        Bukkit.broadcastMessage(CC.translate(plugin.getConfig().getString("koth-capping")));
-                        underControl = true;
-                        capper = player.getUniqueId();
-                    }
-                    timer--;
+                if (bukkitTask != null) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (cuboid.contains(player.getLocation()) && !underControl) {
+                            Bukkit.broadcastMessage(CC.translate(plugin.getConfig().getString("koth-capping")));
+                            underControl = true;
+                            capper = player.getUniqueId();
+                        }
+                        timer--;
 
-                    if (!cuboid.contains(player.getLocation()) && capper != null) {
-                        capper = null;
-                        timer = plugin.getConfig().getInt("koth.captime");
-                    }
+                        if (!cuboid.contains(player.getLocation()) && capper != null) {
+                            capper = null;
+                            timer = plugin.getConfig().getInt("koth.captime");
+                        }
 
-                    if (capper == null && underControl) {
-                        Bukkit.broadcastMessage(plugin.getConfig().getString("koth-lost"));
-                        underControl = false;
-                        timer = plugin.getConfig().getInt("koth.captime");
-                    }
+                        if (capper == null && underControl) {
+                            Bukkit.broadcastMessage(plugin.getConfig().getString("koth-lost"));
+                            underControl = false;
+                            timer = plugin.getConfig().getInt("koth.captime");
+                        }
 
-                    if (underControl && capper != null && timer <= 0) {
-                        Player p = Bukkit.getPlayer(capper);
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), reward().replace("%player%", p.getName()));
-                        Bukkit.broadcastMessage(plugin.getConfig().getString("koth-capped"));
-                        stop();
+                        if (underControl && capper != null && timer <= 0) {
+                            Player p = Bukkit.getPlayer(capper);
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), reward().replace("%player%", p.getName()));
+                            Bukkit.broadcastMessage(plugin.getConfig().getString("koth-capped"));
+                            stop();
+                        }
                     }
                 }
             }
@@ -72,5 +77,9 @@ public class KothTask {
     public void stop(){
         bukkitTask.cancel();
         bukkitTask = null;
+    }
+
+    public BukkitTask getBukkitTask() {
+        return bukkitTask;
     }
 }

@@ -42,7 +42,9 @@ public class KothScheduler {
                     }
                     Koth randomKoth = kothList.get(random.nextInt(kothList.size()));
                     KothManager.activeKoths.add(randomKoth);
-                    new KothTask(plugin).run(plugin);
+                    KothTask kothTask = new KothTask(plugin);
+                    kothTask.run(plugin);
+                    KothTask.activeTasks.put(randomKoth, kothTask.getBukkitTask());
                     timer = plugin.getConfig().getInt("koth.schedule");
                     Bukkit.broadcastMessage(CC.translate(plugin.getConfig().getString("messages.koth-started")));
                 }

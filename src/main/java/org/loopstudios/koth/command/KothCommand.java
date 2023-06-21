@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.loopstudios.VioletKoth;
 import org.loopstudios.koth.Koth;
@@ -86,6 +87,13 @@ public class KothCommand implements CommandExecutor {
                 return false;
             } else {
                 String kothName = args[1];
+
+                if (!this.plugin.getKothManager().exists(kothName)) {
+                    sender.sendMessage(CC.translate(this.plugin
+                            .getConfig().getString("messages.not-koth-exists")));
+                    return false;
+                }
+
                 if (args.length == 2) {
                     wrongUsage(sender);
                     return false;
@@ -114,6 +122,13 @@ public class KothCommand implements CommandExecutor {
                 return false;
             } else {
                 String kothName = args[1];
+
+                if (!this.plugin.getKothManager().exists(kothName)) {
+                    sender.sendMessage(CC.translate(this.plugin
+                            .getConfig().getString("messages.not-koth-exists")));
+                    return false;
+                }
+
                 if (args.length == 2) {
                     wrongUsage(sender);
                     return false;
@@ -144,19 +159,27 @@ public class KothCommand implements CommandExecutor {
             } else {
                 String kothName = args[1];
 
+                if (!this.plugin.getKothManager().exists(kothName)) {
+                    sender.sendMessage(CC.translate(this.plugin
+                            .getConfig().getString("messages.not-koth-exists")));
+                    return false;
+                }
+
                 if (KothManager.activeKoths.get(0) != null) {
                     sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-running")));
                     return false;
                 }
-
-                KothManager.activeKoths.add(new Koth(kothName,
+                Koth koth = new Koth(kothName,
                         this.plugin.getConfig().getInt("koth.captime"),
                         this.plugin.getKothManager().getCuboid1(kothName),
                         this.plugin.getKothManager().getCuboid2(kothName),
                         this.plugin.getKothManager().getCapzone1(kothName),
-                        this.plugin.getKothManager().getCapzone2(kothName)));
+                        this.plugin.getKothManager().getCapzone2(kothName));
+                KothManager.activeKoths.add(koth);
 
-                new KothTask(this.plugin).run(this.plugin);
+                KothTask kothTask = new KothTask(this.plugin);
+                kothTask.run(this.plugin);
+                KothTask.activeTasks.put(koth, kothTask.getBukkitTask());
                 Bukkit.broadcastMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-started")));
             }
         } else if (args[0].equalsIgnoreCase("stop")) {
@@ -171,19 +194,29 @@ public class KothCommand implements CommandExecutor {
             } else {
                 String kothName = args[1];
 
+                if (!this.plugin.getKothManager().exists(kothName)) {
+                    sender.sendMessage(CC.translate(this.plugin
+                            .getConfig().getString("messages.not-koth-exists")));
+                    return false;
+                }
+
                 if (KothManager.activeKoths.get(0) == null) {
                     sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-not-running")));
                     return false;
                 }
 
-                KothManager.activeKoths.add(new Koth(kothName,
+                Koth koth = new Koth(kothName,
                         this.plugin.getConfig().getInt("koth.captime"),
                         this.plugin.getKothManager().getCuboid1(kothName),
                         this.plugin.getKothManager().getCuboid2(kothName),
                         this.plugin.getKothManager().getCapzone1(kothName),
-                        this.plugin.getKothManager().getCapzone2(kothName)));
+                        this.plugin.getKothManager().getCapzone2(kothName));
+                KothManager.activeKoths.add(koth);
 
                 new KothTask(this.plugin).stop();
+                BukkitTask bukkitTask = KothTask.activeTasks.get(koth);
+                bukkitTask.cancel();
+                bukkitTask = null;
                 Bukkit.broadcastMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-stopped")));
             }
         } else if (args[0].equalsIgnoreCase("reset")) {
@@ -199,6 +232,10 @@ public class KothCommand implements CommandExecutor {
             } else {
                 String kothName = args[1];
 
+                if (!KothManager.activeKoths.get(0).getName().equalsIgnoreCase(kothName)) {
+                    sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-not-running")));
+                    return false;
+                }
             }
         }
 
