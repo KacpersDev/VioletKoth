@@ -77,6 +77,7 @@ public class KothTask {
     public void stop(){
         bukkitTask.cancel();
         bukkitTask = null;
+        activeTasks.remove(this.koth);
     }
 
     public BukkitTask getBukkitTask() {

@@ -217,6 +217,7 @@ public class KothCommand implements CommandExecutor {
                 BukkitTask bukkitTask = KothTask.activeTasks.get(koth);
                 bukkitTask.cancel();
                 bukkitTask = null;
+                KothTask.activeTasks.remove(koth);
                 Bukkit.broadcastMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-stopped")));
             }
         } else if (args[0].equalsIgnoreCase("reset")) {
@@ -235,6 +236,45 @@ public class KothCommand implements CommandExecutor {
                 if (!KothManager.activeKoths.get(0).getName().equalsIgnoreCase(kothName)) {
                     sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-not-running")));
                     return false;
+                }
+
+                Koth koth = new Koth(kothName,
+                        this.plugin.getConfig().getInt("koth.captime"),
+                        this.plugin.getKothManager().getCuboid1(kothName),
+                        this.plugin.getKothManager().getCuboid2(kothName),
+                        this.plugin.getKothManager().getCapzone1(kothName),
+                        this.plugin.getKothManager().getCapzone2(kothName));
+                BukkitTask bukkitTask = KothTask.activeTasks.get(koth);
+                bukkitTask.cancel();
+                bukkitTask = null;
+                KothTask.activeTasks.remove(koth);
+
+                KothManager.activeKoths.add(koth);
+                KothTask kothTask = new KothTask(this.plugin);
+                kothTask.run(this.plugin);
+                KothTask.activeTasks.put(koth, kothTask.getBukkitTask());
+                sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-reset")));
+            }
+        } else if (args[0].equalsIgnoreCase("capture")) {
+            if (!sender.hasPermission("koth.admin")) {
+                sender.sendMessage(CC.translate(this.plugin.getConfig()
+                        .getString("messages.no-permissions")));
+                return false;
+            }
+
+            if (args.length == 1) {
+                wrongUsage(sender);
+                return false;
+            } else {
+                Player player = Bukkit.getPlayer(args[1]);
+
+                if (args.length == 2) {
+                    wrongUsage(sender);
+                    return false;
+                } else {
+                    String kothName = args[2];
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.getKothManager().getRandomReward().replace("%player%", player.getName()));
+                    sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-capture")));
                 }
             }
         }
