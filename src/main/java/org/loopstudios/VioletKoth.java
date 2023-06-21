@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.loopstudios.koth.command.KothCommand;
 import org.loopstudios.koth.listener.KothListener;
 import org.loopstudios.koth.manager.KothManager;
+import org.loopstudios.koth.task.KothScheduler;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public final class VioletKoth extends JavaPlugin {
         this.listener(Bukkit.getPluginManager());
 
         this.kothManager = new KothManager(this);
+        new KothScheduler(this).run();
     }
 
     private void listener(PluginManager pluginManager){

@@ -15,6 +15,7 @@ messages:
   koth-started: "&aSuccessfully started koth"
   koth-stopped: "&aSuccesfully stopped koth"
 koth:
+  scheudle: 1000
   captime: 500
 settings:
   reward: # placeholders -> %player%
