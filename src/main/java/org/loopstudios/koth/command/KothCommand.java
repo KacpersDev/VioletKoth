@@ -1,5 +1,6 @@
 package org.loopstudios.koth.command;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,7 +22,7 @@ public class KothCommand implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    @Override
+    @Override @SuppressWarnings("ALL")
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
 
         if (args.length == 0) {
@@ -156,7 +157,7 @@ public class KothCommand implements CommandExecutor {
                         this.plugin.getKothManager().getCapzone2(kothName)));
 
                 new KothTask(this.plugin).run(this.plugin);
-                sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-started")));
+                Bukkit.broadcastMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-started")));
             }
         } else if (args[0].equalsIgnoreCase("stop")) {
             if (!sender.hasPermission("koth.admin")) {
@@ -183,7 +184,7 @@ public class KothCommand implements CommandExecutor {
                         this.plugin.getKothManager().getCapzone2(kothName)));
 
                 new KothTask(this.plugin).stop();
-                sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-stopped")));
+                Bukkit.broadcastMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-stopped")));
             }
         } else if (args[0].equalsIgnoreCase("reset")) {
             if (!sender.hasPermission("koth.admin")) {

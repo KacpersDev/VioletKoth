@@ -6,7 +6,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.loopstudios.VioletKoth;
-import org.loopstudios.koth.manager.KothManager;
 import org.loopstudios.utils.Cuboid;
 
 import java.util.Objects;
@@ -14,11 +13,9 @@ import java.util.Objects;
 public class KothListener implements Listener {
 
     private final VioletKoth plugin;
-    private final KothManager kothManager;
 
     public KothListener(VioletKoth plugin) {
         this.plugin = plugin;
-        this.kothManager = this.plugin.getKothManager();
     }
 
     @EventHandler
