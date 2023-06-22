@@ -321,6 +321,9 @@ public class KothCommand implements CommandExecutor {
                 }
             }
 
+            meta.setLore(lore);
+            itemStack.setItemMeta(meta);
+            inventory.setItem(this.plugin.getConfig().getInt("inventory.item.slot"), itemStack);
             player.openInventory(inventory);
         }
 

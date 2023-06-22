@@ -5,7 +5,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.loopstudios.VioletKoth;
+import org.loopstudios.utils.CC;
 import org.loopstudios.utils.Cuboid;
 
 import java.util.Objects;
@@ -43,6 +45,13 @@ public class KothListener implements Listener {
                     event.setCancelled(true);
                 }
             }
+        }
+    }
+
+    @EventHandler @Deprecated
+    public void onInventory(InventoryClickEvent event) {
+        if (event.getView().getTitle().equalsIgnoreCase(CC.translate(this.plugin.getConfig().getString("inventory.title")))) {
+            event.setCancelled(true);
         }
     }
 }

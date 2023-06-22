@@ -31,3 +31,13 @@ inventory:
   size: 36
   item:
     item: ""
+    name: ""
+    lore-null:
+      - ""
+      - ""
+      - ''
+    lore:
+      - ""
+      - ""
+      - ""
+    slot: 1
