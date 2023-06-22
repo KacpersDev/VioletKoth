@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.loopstudios.koth.command.KothCommand;
+import org.loopstudios.koth.command.NextKothCommand;
 import org.loopstudios.koth.listener.KothListener;
 import org.loopstudios.koth.manager.KothManager;
 import org.loopstudios.koth.task.KothScheduler;
@@ -18,6 +19,7 @@ import java.util.Objects;
 public final class VioletKoth extends JavaPlugin {
 
     private KothManager kothManager;
+    private KothScheduler kothScheduler;
     private final File kothData = new File(getDataFolder(), "kothdata.yml");
     private final FileConfiguration kothDataConfiguration = new YamlConfiguration();
 
@@ -28,7 +30,8 @@ public final class VioletKoth extends JavaPlugin {
         this.listener(Bukkit.getPluginManager());
 
         this.kothManager = new KothManager(this);
-        new KothScheduler(this).run();
+        this.kothScheduler = new KothScheduler(this);
+        this.kothScheduler.run();
     }
 
     private void listener(PluginManager pluginManager){
@@ -37,6 +40,7 @@ public final class VioletKoth extends JavaPlugin {
 
     private void command(){
         Objects.requireNonNull(this.getCommand("koth")).setExecutor(new KothCommand(this));
+        Objects.requireNonNull(this.getCommand("nextkoth")).setExecutor(new NextKothCommand(this));
     }
 
     private void configuration(){
@@ -80,5 +84,9 @@ public final class VioletKoth extends JavaPlugin {
 
     public File getKothData() {
         return kothData;
+    }
+
+    public KothScheduler getKothScheduler() {
+        return kothScheduler;
     }
 }

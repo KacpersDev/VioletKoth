@@ -18,15 +18,15 @@ public class KothTask {
     private final VioletKoth plugin;
     public static HashMap<Koth, BukkitTask> activeTasks = new HashMap<>();
     private BukkitTask bukkitTask;
-    private int timer;
+    public static int timer;
     private final Koth koth;
     private final Cuboid cuboid;
-    private boolean underControl = false;
-    private UUID capper = null;
+    public static boolean underControl = false;
+    public static UUID capper = null;
 
     public KothTask(VioletKoth plugin) {
         this.plugin = plugin;
-        this.timer = this.plugin.getConfig().getInt("koth.captime");
+        timer = this.plugin.getConfig().getInt("koth.captime");
         this.koth = KothManager.activeKoths.get(0);
         this.cuboid = new Cuboid(this.koth.getCapCorner1(), this.koth.getCapCorner2());
     }

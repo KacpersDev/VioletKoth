@@ -17,6 +17,7 @@ messages:
   koth-not-running: "&cKoth is not running."
   koth-reset: "&aSuccessfully reset koth timer."
   koth-capture: "&aSuccessfully gave reward to captured player"
+  koth-next: "&cNext koth is in %timer% seconds"
 koth:
   scheudle: 1000
   captime: 500
@@ -25,3 +26,8 @@ settings:
     1:
       chance: 100
       command: ""
+inventory:
+  title: "&aInventory"
+  size: 36
+  item:
+    item: ""

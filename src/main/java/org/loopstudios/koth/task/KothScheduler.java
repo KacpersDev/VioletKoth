@@ -51,4 +51,8 @@ public class KothScheduler {
             }
         }, 0L ,20L);
     }
+
+    public int getTimer() {
+        return timer;
+    }
 }

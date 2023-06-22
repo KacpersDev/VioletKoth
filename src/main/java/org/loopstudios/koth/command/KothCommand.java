@@ -2,10 +2,14 @@ package org.loopstudios.koth.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.loopstudios.VioletKoth;
@@ -15,9 +19,11 @@ import org.loopstudios.koth.manager.KothManager;
 import org.loopstudios.koth.task.KothTask;
 import org.loopstudios.utils.CC;
 
+import java.util.ArrayList;
+
 public class KothCommand implements CommandExecutor {
 
-    private VioletKoth plugin;
+    private final VioletKoth plugin;
 
     public KothCommand(VioletKoth plugin) {
         this.plugin = plugin;
@@ -277,6 +283,45 @@ public class KothCommand implements CommandExecutor {
                     sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-capture")));
                 }
             }
+        } else {
+            if (!(sender instanceof Player)) return false;
+            Player player = (Player) sender;
+            if (!sender.hasPermission("koth.gui")) {
+                sender.sendMessage(CC.translate(this.plugin.getConfig()
+                        .getString("messages.no-permissions")));
+                return false;
+            }
+
+            String kothName = args[1];
+            if (!this.plugin.getKothManager().exists(kothName)) {
+                sender.sendMessage(CC.translate(this.plugin
+                        .getConfig().getString("messages.not-koth-exists")));
+                return false;
+            }
+
+            Inventory inventory = Bukkit.createInventory(player,
+                    this.plugin.getConfig().getInt("inventory.size"),
+                    CC.translate(this.plugin.getConfig().getString("inventory.title")));
+
+            ItemStack itemStack = new ItemStack(Material.valueOf(this.plugin.getConfig().getString("inventory.item.item")));
+            ItemMeta meta = itemStack.getItemMeta();
+            meta.setDisplayName(CC.translate(this.plugin.getConfig().getString("inventory.item.name")));
+            ArrayList<String> lore = new ArrayList<>();
+            if (KothTask.activeTasks.get(0) == null) {
+                for (final String string : this.plugin.getConfig().getStringList("inventory.item.lore-none")) {
+                    lore.add(CC.translate(string).replace("%koth%", kothName));
+                }
+            } else {
+                for (final String string : this.plugin.getConfig().getStringList("inventory.item.lore")) {
+                    lore.add(CC.translate(string)
+                            .replace("%koth%", kothName)
+                            .replace("%timer%", String.valueOf(KothTask.timer))
+                            .replace("%capper%", String.valueOf(Bukkit.getPlayer(KothTask.capper)))
+                            .replace("%control%", String.valueOf(KothTask.underControl)));
+                }
+            }
+
+            player.openInventory(inventory);
         }
 
         return true;

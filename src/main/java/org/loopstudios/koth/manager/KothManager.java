@@ -81,13 +81,4 @@ public class KothManager {
         int randomList = random.nextInt(commands.size());
         return commands.get(randomList);
     }
-
-    public LocationType getLocationByString(String s){
-        if (s.equalsIgnoreCase("first")) {
-            return LocationType.FIRST;
-        } else if (s.equalsIgnoreCase("second")) {
-            return LocationType.SECOND;
-        }
-        return null;
-    }
 }
