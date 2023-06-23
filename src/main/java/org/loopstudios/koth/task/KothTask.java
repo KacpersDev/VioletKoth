@@ -40,8 +40,13 @@ public class KothTask {
 
                 if (bukkitTask != null) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
+
+                        if (!underControl) {
+                            timer = plugin.getConfig().getInt("koth.captime");
+                        }
+
                         if (cuboid.contains(player.getLocation()) && !underControl) {
-                            Bukkit.broadcastMessage(CC.translate(plugin.getConfig().getString("koth-capping")));
+                            Bukkit.broadcastMessage(CC.translate(plugin.getConfig().getString("messages.koth-capping")));
                             underControl = true;
                             capper = player.getUniqueId();
                         }
@@ -53,7 +58,7 @@ public class KothTask {
                         }
 
                         if (capper == null && underControl) {
-                            Bukkit.broadcastMessage(plugin.getConfig().getString("koth-lost"));
+                            Bukkit.broadcastMessage(CC.translate(plugin.getConfig().getString("messages.koth-lost")));
                             underControl = false;
                             timer = plugin.getConfig().getInt("koth.captime");
                         }
@@ -61,10 +66,12 @@ public class KothTask {
                         if (underControl && capper != null && timer <= 0) {
                             Player p = Bukkit.getPlayer(capper);
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), reward().replace("%player%", p.getName()));
-                            Bukkit.broadcastMessage(plugin.getConfig().getString("koth-capped"));
+                            Bukkit.broadcastMessage(CC.translate(plugin.getConfig().getString("messages.koth-capped")));
                             stop();
                         }
                     }
+
+                    Bukkit.broadcastMessage("debug so you can see, it works " + timer);
                 }
             }
         }, 0L, 20L);

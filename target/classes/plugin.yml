@@ -1,0 +1,9 @@
+name: VioletKoth
+version: '1.0-SNAPSHOT'
+main: org.loopstudios.VioletKoth
+api-version: '1.19'
+author: Loop Studios
+description: Koth plugin
+commands:
+  koth:
+  nextkoth:

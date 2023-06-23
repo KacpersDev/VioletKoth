@@ -167,11 +167,13 @@ public class KothCommand implements CommandExecutor {
 
                 if (!this.plugin.getKothManager().exists(kothName)) {
                     sender.sendMessage(CC.translate(this.plugin
-                            .getConfig().getString("messages.not-koth-exists")));
+                            .getConfig().getString("messages.koth-not-exists")));
                     return false;
                 }
 
-                if (KothManager.activeKoths.get(0) != null) {
+
+                Bukkit.broadcastMessage(String.valueOf(KothManager.activeKoths));
+                if (KothManager.activeKoths.size() >= 1) {
                     sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-running")));
                     return false;
                 }
