@@ -38,14 +38,17 @@ inventory:
   title: "&aInventory"
   size: 36
   item:
-    item: ""
-    name: ""
+    item: "REDSTONE_BLOCK"
+    name: "&cKoth Info"
     lore-null:
       - ""
-      - ""
+      - "NO KOTH"
       - ''
     lore:
       - ""
-      - ""
+      - "%koth%"
+      - "%capper%"
+      - "%control%"
+      - "%timer%"
       - ""
     slot: 1

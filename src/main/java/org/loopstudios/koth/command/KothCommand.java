@@ -285,7 +285,7 @@ public class KothCommand implements CommandExecutor {
                     sender.sendMessage(CC.translate(this.plugin.getConfig().getString("messages.koth-capture")));
                 }
             }
-        } else {
+        } else if (args[0].equalsIgnoreCase("info")){
             if (!(sender instanceof Player)) return false;
             Player player = (Player) sender;
             if (!sender.hasPermission("koth.gui")) {
@@ -309,8 +309,8 @@ public class KothCommand implements CommandExecutor {
             ItemMeta meta = itemStack.getItemMeta();
             meta.setDisplayName(CC.translate(this.plugin.getConfig().getString("inventory.item.name")));
             ArrayList<String> lore = new ArrayList<>();
-            if (KothTask.activeTasks.get(0) == null) {
-                for (final String string : this.plugin.getConfig().getStringList("inventory.item.lore-none")) {
+            if (KothTask.activeTasks.size() < 1) {
+                for (final String string : this.plugin.getConfig().getStringList("inventory.item.lore-null")) {
                     lore.add(CC.translate(string).replace("%koth%", kothName));
                 }
             } else {
@@ -318,7 +318,7 @@ public class KothCommand implements CommandExecutor {
                     lore.add(CC.translate(string)
                             .replace("%koth%", kothName)
                             .replace("%timer%", String.valueOf(KothTask.timer))
-                            .replace("%capper%", String.valueOf(Bukkit.getPlayer(KothTask.capper)))
+                            .replace("%capper%", String.valueOf(Bukkit.getPlayer(KothTask.capper).getName()))
                             .replace("%control%", String.valueOf(KothTask.underControl)));
                 }
             }
